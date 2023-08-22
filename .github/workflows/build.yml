@@ -1,0 +1,56 @@
+name: Build
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        platform:
+          [
+            { runner: 'windows-latest', command: 'build:windows' },
+            { runner: 'macos-latest', command: 'build:mac' },
+            { runner: 'ubuntu-latest', command: 'build:linux' },
+          ]
+    runs-on: ${{ matrix.platform.runner }}
+    env:
+      CXX: g++
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Setup GCC
+        uses: egor-tensin/setup-gcc@v1
+        if: ${{ matrix.platform.runner == 'ubuntu-latest' }}
+        with:
+          version: latest
+          platform: x64
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.12.0
+
+      - run: yarn --pure-lockfile
+      - run: yarn ${{ matrix.platform.command }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: |
+            package.json
+            index.js
+            index.mjs
+            index.d.ts
+            README.md
+            prebuilds/

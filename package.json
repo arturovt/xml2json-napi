@@ -1,0 +1,52 @@
+{
+  "name": "node-xml2json",
+  "version": "0.0.1",
+  "license": "MIT",
+  "description": "Bindings for the xml2json C++ library to the Node.js world",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arturovt/node-xml2json.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arturovt/node-xml2json/issues"
+  },
+  "homepage": "https://github.com/arturovt/node-xml2json#readme",
+  "main": "./index.js",
+  "exports": {
+    "import": "./index.mjs",
+    "require": "./index.js"
+  },
+  "typings": "./typings/index.d.ts",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "index.js",
+    "index.mjs",
+    "index.d.ts",
+    "README.md",
+    "prebuilds/**"
+  ],
+  "scripts": {
+    "install": "node-gyp-build",
+    "build:dev": "node-gyp rebuild --debug --gui=1",
+    "build:mac": "prebuildify --napi --arch x64+arm64",
+    "build:windows": "prebuildify --napi --platform win32 --arch x64+ia32",
+    "build:linux": "prebuildify --napi --platform linux --arch x64+ia32",
+    "test": "ava"
+  },
+  "dependencies": {
+    "node-gyp-build": "^4.6.0"
+  },
+  "devDependencies": {
+    "ava": "^5.3.1",
+    "node-gyp": "9.4.0",
+    "prebuildify": "5.0.0",
+    "xml-js": "^1.6.11"
+  },
+  "binary": {
+    "napi_versions": [
+      3
+    ]
+  }
+}
