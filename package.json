@@ -1,16 +1,16 @@
 {
-  "name": "node-xml2json",
+  "name": "xml2json-napi",
   "version": "0.0.1",
   "license": "MIT",
   "description": "Bindings for the xml2json C++ library to the Node.js world",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arturovt/node-xml2json.git"
+    "url": "git+https://github.com/arturovt/xml2json-napi.git"
   },
   "bugs": {
-    "url": "https://github.com/arturovt/node-xml2json/issues"
+    "url": "https://github.com/arturovt/xml2json-napi/issues"
   },
-  "homepage": "https://github.com/arturovt/node-xml2json#readme",
+  "homepage": "https://github.com/arturovt/xml2json-napi#readme",
   "main": "./index.js",
   "exports": {
     "import": "./index.mjs",
