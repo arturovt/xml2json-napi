@@ -1,6 +1,6 @@
 {
   "name": "node-xml2json",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "description": "Bindings for the xml2json C++ library to the Node.js world",
   "repository": {
