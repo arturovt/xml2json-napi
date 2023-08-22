@@ -1,7 +1,7 @@
 import test from 'ava';
 
 import { xml2json } from '../index.mjs';
-import { readFixture } from './utils.mjs';
+import { readFixture } from './_utils.mjs';
 
 test('converts to json (1)', (t) => {
 	const xml = readFixture('test-track-1.xml');
