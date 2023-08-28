@@ -55,6 +55,7 @@ jobs:
             index.mjs
             index.d.ts
             README.md
+            LICENSE
             prebuilds/
             src
             libxml2json
