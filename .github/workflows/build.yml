@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 concurrency:
   group: build-${{ github.ref }}
@@ -45,6 +46,7 @@ jobs:
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         with:
           name: build
           path: |
