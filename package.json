@@ -25,7 +25,10 @@
     "index.mjs",
     "index.d.ts",
     "README.md",
-    "prebuilds/**"
+    "prebuilds/**",
+    "src",
+    "libxml2json",
+    "binding.gyp"
   ],
   "scripts": {
     "install": "node-gyp-build",
@@ -46,7 +49,7 @@
   },
   "binary": {
     "napi_versions": [
-      3
+      8
     ]
   }
 }

@@ -54,3 +54,6 @@ jobs:
             index.d.ts
             README.md
             prebuilds/
+            src
+            libxml2json
+            binding.gyp
