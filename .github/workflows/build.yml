@@ -56,14 +56,41 @@ jobs:
         with:
           python-version: '3.11'
 
+      # --ignore-scripts prevents "install": "node-gyp-build" from running during
+      # yarn install — at this point there are no prebuilds yet, so it would fail.
+      # The actual build happens in the next step via the platform-specific script.
       - run: yarn --pure-lockfile --ignore-scripts
       - run: yarn ${{ matrix.platform.command }}
 
-      # Only upload prebuilt binaries on manual workflow_dispatch triggers,
-      # not on every PR/push — keeps artifact storage clean
-      - name: Upload artifacts
+      # Upload only the platform-specific prebuilds — shared files are assembled
+      # in the publish job to avoid duplicating them across 3 artifacts
+      - name: Upload prebuilds
         uses: actions/upload-artifact@v4
         if: ${{ github.event_name == 'workflow_dispatch' }}
+        with:
+          name: prebuilds-${{ matrix.platform.runner }}
+          path: prebuilds/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # Download all 3 platform prebuilds and merge them into a single prebuilds/ folder
+      - name: Download all prebuilds
+        uses: actions/download-artifact@v4
+        with:
+          pattern: prebuilds-*
+          merge-multiple: true
+          path: prebuilds/
+
+      # Single final artifact containing shared files + all platform .node binaries
+      - name: Upload final artifact
+        uses: actions/upload-artifact@v4
         with:
           name: build
           path: |
