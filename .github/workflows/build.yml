@@ -22,30 +22,47 @@ jobs:
             { runner: 'ubuntu-latest', command: 'build:linux' },
           ]
     runs-on: ${{ matrix.platform.runner }}
+    # CXX is only meaningful for Linux/GCC — overridden per-step on Windows via MSVC
     env:
       CXX: g++
 
     steps:
-      - uses: actions/checkout@v3
+      # Checkout with submodules so libxml2json is available without a postinstall script
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
+      # Linux only: install a specific GCC version via egor-tensin/setup-gcc
       - name: Setup GCC
-        uses: egor-tensin/setup-gcc@v1
+        uses: egor-tensin/setup-gcc@v2
         if: ${{ matrix.platform.runner == 'ubuntu-latest' }}
         with:
           version: latest
           platform: x64
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18.12.0
+      # Windows only: set up MSVC environment (cl.exe, link.exe, etc.)
+      # Required for node-gyp to compile the native addon on Windows
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        if: ${{ matrix.platform.runner == 'windows-latest' }}
 
-      - run: yarn --pure-lockfile
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Python 3.11 is the last version with distutils built-in.
+      # node-gyp depends on distutils; 3.12+ removed it and requires setuptools as a shim.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - run: yarn --pure-lockfile --ignore-scripts
       - run: yarn ${{ matrix.platform.command }}
 
+      # Only upload prebuilt binaries on manual workflow_dispatch triggers,
+      # not on every PR/push — keeps artifact storage clean
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ github.event_name == 'workflow_dispatch' }}
         with:
           name: build
