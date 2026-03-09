@@ -1,7 +1,7 @@
 {
   "name": "xml2json-napi",
-  "version": "0.0.3",
-  "license": "MIT",
+  "version": "0.0.4",
+  "license": "Apache-2.0",
   "description": "Bindings for the xml2json C++ library to the Node.js world",
   "repository": {
     "type": "git",
