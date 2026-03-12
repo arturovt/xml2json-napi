@@ -12,6 +12,7 @@
   },
   "homepage": "https://github.com/arturovt/xml2json-napi#readme",
   "main": "./index.js",
+  "module": "./index.mjs",
   "exports": {
     ".": {
       "import": "./index.mjs",
@@ -45,7 +46,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "node-gyp-build": "^4.6.0"
+    "node-gyp-build-esm": "5.0.0"
   },
   "devDependencies": {
     "ava": "^5.3.1",
