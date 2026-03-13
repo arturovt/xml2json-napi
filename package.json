@@ -46,7 +46,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "node-gyp-build-esm": "5.0.0"
+    "node-gyp-build-esm": "5.0.2"
   },
   "devDependencies": {
     "ava": "^5.3.1",
